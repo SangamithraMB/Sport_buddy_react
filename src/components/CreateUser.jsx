@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { data } from 'react-router-dom';
+import { createUser } from '../Services/userService';
 
 function CreateUser() {
     const [firstName, setFirstName] = useState('');
@@ -22,31 +22,20 @@ function CreateUser() {
         };
 
     try {
-        const response = await fetch (' http://127.0.0.1:5000/users', {
-            method: 'POST' ,
-            headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*', 
-            },
-        body: JSON.stringify(userData),
-        });
+        const result = await createUser(userData).then(response => console.log(response));
 
-        if (response.ok) {
-            const result = response.json;
-            setUserCreated(data);
-            setMessage(`User created: ${result.first_name} ${result.last_name} ${result.user_name}`)
+            setUserCreated(result);
+            setMessage("User created successfully!")
+
             setFirstName('');
             setLastName('');
             setUserName('');
             setEmail('');
             setPassword('');
-        } else {
+        } catch {
             setMessage('Failed to create user!')
         }
-    }    catch (error) {
-        console.log('Error:', error);
-        setMessage('An error occurred while creating the user');
-    } 
+     
 };
 return (
     <div className='p-4'>
