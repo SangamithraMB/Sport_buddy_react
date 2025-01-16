@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchSports } from '../Services/sportService';
+import { fetchSports } from "../Services/SportService";
 
 function SportList() {
   const [sports, setSports] = useState([]);
