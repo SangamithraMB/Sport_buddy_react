@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
-    <div className="bg-purple-100 text-yellow-900 bg-[url(src/assets/prefer_1.jpg)] bg-blend-overlay">
+    <div className="bg-purple-100 text-yellow-900 bg-[url(/assets/prefer_1.jpg)] bg-blend-overlay">
       {/* Hero Section */}
       <section className="relative bg-blue-600 text-white py-20 text-center bg-opacity-25">
         <div className="container mx-auto px-6">
@@ -62,11 +62,11 @@ const LandingPage = () => {
         <h2 className="text-3xl font-semibold text-center mb-12">What Players Say</h2>
         <div className="container mx-auto px-6 md:flex md:justify-center">
           <div className="max-w-md p-6 bg-white shadow-lg rounded-lg text-center mx-4 mb-6 bg-opacity-75">
-            <p className="italic">"SportBuddy has helped me find amazing teammates for soccer games!"</p>
+            <p className="italic">&ldquo;SportBuddy has helped me find amazing teammates for soccer games!&ldquo;</p>
             <h4 className="mt-4 font-semibold">- Alex Johnson</h4>
           </div>
           <div className="max-w-md p-6 bg-white shadow-lg rounded-lg text-center mx-4 mb-6 bg-opacity-75">
-            <p className="italic">"Love how easy it is to organize basketball matches!"</p>
+            <p className="italic">&ldquo;Love how easy it is to organize basketball matches!&ldquo;</p>
             <h4 className="mt-4 font-semibold">- Emily Brown</h4>
           </div>
         </div>
