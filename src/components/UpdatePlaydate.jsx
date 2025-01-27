@@ -7,7 +7,7 @@ import { fetchSports } from "../Services/sportService";
 
 const UpdatePlaydate = () => {
   const { user } = useAuth();
-  const { playdateId } = useParams(); 
+  const { playdateId } = useParams();
   const [sportsData, setSportsData] = useState([]);
   const [selectedSport, setSelectedSport] = useState("");
   const [title, setTitle] = useState("");
@@ -24,7 +24,7 @@ const UpdatePlaydate = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
+    return `${day}-${month}-${year}`;
   }
 
   useEffect(() => {
@@ -49,8 +49,20 @@ const UpdatePlaydate = () => {
           setTitle(playdate.title);
           setSelectedSport(playdate.sport_name);
           setAddress(playdate.address);
-          setDate(playdate.date.split(" ")[0]); // Assuming date is in "YYYY-MM-DD HH:mm:ss" format
-          setTime(playdate.date.split(" ")[1].split(":")[0] + ":" + playdate.date.split(" ")[1].split(":")[1]);
+
+          // Split the date and time from the response (ISO format)
+          const responseDate = new Date(playdate.date); // Convert ISO string to Date object
+          if (isNaN(responseDate)) {
+            setError("Invalid date format.");
+            return;
+          }
+
+          const formattedDate = responseDate.toISOString().split('T')[0]; // "YYYY-MM-DD"
+          const formattedTime = responseDate.toISOString().split('T')[1].split(':').slice(0, 2).join(':'); // "HH:MM"
+
+          setDate(formattedDate); // Set date field
+          setTime(formattedTime); // Set time field
+
           setMaxParticipants(playdate.max_participants);
         }
       } catch (err) {

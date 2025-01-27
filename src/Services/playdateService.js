@@ -6,7 +6,7 @@ export const fetchPlaydates = async () => {
 }
 
 export const fetchPlaydatesById = async (playdateId) => {
-    const response = await api.get(`/playdate/${playdateId}`);
+    const response = await api.get(`/playdates/${playdateId}`);
     return response.data
 }
 
