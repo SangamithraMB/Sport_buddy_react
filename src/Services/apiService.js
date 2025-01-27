@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://sport-buddy-test.onrender.com'; 
+// const API_BASE_URL = 'https://sport-buddy-test.onrender.com'; 
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,16 +10,12 @@ const api = axios.create({
   },
 });
 
-// Conditionally add token based on environment or a flag
-const isDebugMode = true;  // Set this to false when you're ready to use JWT
-
 api.interceptors.request.use((config) => {
-  if (!isDebugMode) {
-    const token = localStorage.getItem('jwtToken'); 
+ const token = localStorage.getItem('jwtToken'); 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-  }
+
   return config;
 });
 

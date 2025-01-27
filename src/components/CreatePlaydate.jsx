@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { createPlaydate } from "../Services/playdateService";
 import { createParticipants } from "../Services/participantsService";
-import { fetchSports } from "../Services/SportService";
 import { useAuth } from "./AuthContext";
 import { Navigate } from "react-router-dom";
+import { fetchSports } from "../Services/sportService";
 
 const CreatePlaydate = () => {
   const { user } = useAuth();

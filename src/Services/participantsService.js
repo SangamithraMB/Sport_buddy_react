@@ -1,26 +1,16 @@
 import api from "./apiService";
 
-export const fetchParticipants = async () => {
-    const response = await api.get('/participants');
+export const fetchParticipants = async (playdateId) => {
+    const response = await api.get(`/playdates/${playdateId}/participants`);
     return response.data
 }
 
-export const fetchParticipantsById = async (playdateId) => {
-    const response = await api.get(`/participants/${playdateId}`);
+export const createParticipants = async (playdateId, participantsData) => {
+    const response = await api.post(`/playdates/${playdateId}/participants`, JSON.stringify(participantsData));
     return response.data
 }
 
-export const createParticipants = async (participantsData) => {
-    const response = await api.post('/participants', participantsData);
-    return response.data
-}
-
-export const updateParticipants = async (participantsId, updatedParticipants) => {
-    const response = await api.put(`/participants/${participantsId}`, updatedParticipants);
-    return response.data
-}
-
-export const deleteParticipants = async (participantsId) => {
-    const response = await api.delete(`/participants/${participantsId}`);
+export const deleteParticipants = async (playdateId, userId) => {
+    const response = await api.delete(`/playdates/${playdateId}/participants/${userId}`);
     return response.data
 }
