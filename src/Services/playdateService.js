@@ -16,11 +16,11 @@ export const createPlaydate = async (playdateData) => {
 }
 
 export const updatePlaydate = async (playdateId, updatedPlaydate) => {
-    const response = await api.put(`/playdate/${playdateId}`, updatedPlaydate);
+    const response = await api.put(`/playdates/${playdateId}`, updatedPlaydate);
     return response.data
 }
 
 export const deletePlaydate = async (playdateId) => {
-    const response = await api.delete(`/playdate/${playdateId}`);
+    const response = await api.delete(`/playdates/${playdateId}`);
     return response.data
 }
