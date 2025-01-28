@@ -62,6 +62,11 @@ function PlaydateListById() {
         return;
       }
 
+      if (participants.participants_count >= playdateById.max_participants) {
+        alert("The room is full. You cannot join at this moment.");
+        return;
+      }
+  
       const newParticipant = await createParticipants(playdateId, {
         user_id: user.userId,
       });
@@ -112,36 +117,35 @@ function PlaydateListById() {
   const isCreator = playdateById?.creator_id === user?.userId;
 
   return user ? (
-    <div className="p-8 bg-gray-100 min-h-screen flex justify-center">
+    <div className="p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/ball.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
       {loading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : playdateById ? (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-7xl flex">
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-7xl flex flex-col md:flex-row bg-opacity-55">
           {/* Content area */}
           <div className="flex-1 p-6">
             <h1 className="text-3xl font-semibold text-gray-800 mb-2">
               {playdateById.title}
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 mb-2">
               🏅 {playdateById.sport_name}
             </p>
-            <p className="text-lg text-gray-600">📍 {playdateById.address}</p>
-            <p className="text-lg text-gray-600">📅 {playdateById.date}</p>
+            <p className="text-lg text-gray-600 mb-2">📍 {playdateById.address}</p>
+            <p className="text-lg text-gray-600 mb-4">📅 {playdateById.date}</p>
 
-            {isCreator &&  (
-              <button className="mt-4 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
-              onClick={() => navigate(`/update-playdate/${playdateId}`)
-              }>
-               Update Playdate </button>
+            {isCreator && (
+              <button
+                className="mt-4 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
+                onClick={() => navigate(`/update-playdate/${playdateId}`)}
+              >
+                Update Playdate
+              </button>
             )}
 
             <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-800">
-                Participants:
-                {console.log("Participants List:", participants.participants)}
-              </h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-2">Participants:</h3>
               {participants?.participants?.length > 0 ? (
-                <ul className="list-disc ml-6 text-gray-700">
+                <ul className="list-disc ml-6 text-gray-700 mb-2">
                   {participants.participants.map((participant) => (
                     <li key={participant.id}>{participant.username}</li>
                   ))}
@@ -149,11 +153,17 @@ function PlaydateListById() {
               ) : (
                 <p className="text-gray-500">No participants yet.</p>
               )}
-              <p className="text-gray-700 mt-2">
+              <p className="text-gray-700 mt-2 mb-4">
                 <strong>Total Joined:</strong> {participants.participants_count}{" "}
                 / {participants.max_participants}
               </p>
             </div>
+
+            {participants.participants_count >= playdateById.max_participants && (
+              <p className="text-red-500 mt-6">
+                The room is full. You cannot join at this moment.
+              </p>
+            )}
 
             {isUserInRoom ? (
               <div>
@@ -163,7 +173,7 @@ function PlaydateListById() {
                 >
                   Revoke
                 </button>
-               {isConfettiActive && <Confetti width={width} height={height} /> }
+                {isConfettiActive && <Confetti width={width} height={height} />}
               </div>
             ) : (
               <button

@@ -43,7 +43,7 @@ function CreateUser() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-red-100 bg-[url(/assets/racetrack.avif)] bg-blend-overlay bg-cover bg-no-repeat bg-center">
-      <div className="w-full max-w-md p-6 bg-purple bg-opacity-25 rounded-lg shadow-lg transition-all duration-500">
+      <div className="w-full max-w-md p-6 bg-white-500 bg-opacity-25 rounded-lg shadow-lg transition-all duration-500">
         {formVisible && (
           <div>
             <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">

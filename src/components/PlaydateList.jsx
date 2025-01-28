@@ -16,18 +16,17 @@ function PlaydateList() {
         const playdatesData = await fetchPlaydates();
         setPlaydates(playdatesData);
       } catch (err) {
-        console.error("Error fetching sports:", err);
+        console.error("Error fetching playdates:", err);
         setError("Failed to load playdates");
       } finally {
         setLoading(false);
       }
     };
-    if(user)
-    getPlaydates();
+    if (user) getPlaydates();
   }, [user]);
 
   return user ? (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="p-8 bg-blue-100 min-h-screen bg-[url(/assets/court.avif)] bg-blend-overlay ">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
         🏆 Open Playdates
       </h2>
@@ -39,20 +38,25 @@ function PlaydateList() {
       ) : playdates.length === 0 ? (
         <p className="text-center text-gray-600">No playdates available.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto relative z-10 opacity-70">
           {playdates.map((playdate) => (
             <div
               key={playdate.id}
-              className="bg-white shadow-lg rounded-lg p-6"
+              className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition duration-300 border border-gray-200 flex flex-col justify-between h-full"
             >
-              <h3 className="text-xl font-semibold text-gray-800">
-                {playdate.title}
-              </h3>
-              <p className="text-gray-600 mt-1">🏅 {playdate.sport_name}</p>
-              <p className="text-gray-600 mt-1">📍 {playdate.address}</p>
-              <p className="text-gray-600 mt-1">📅 {playdate.date}</p>
+              {/* Playdate Details */}
+              <div>
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                  {playdate.title}
+                </h3>
+                <p className="text-gray-600">🏅 {playdate.sport_name}</p>
+                <p className="text-gray-600">📍 {playdate.address}</p>
+                <p className="text-gray-600">📅 {playdate.date}</p>
+              </div>
+
+              {/* View Playdate Button */}
               <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 self-start"
                 onClick={() => navigate(`/open-playdates/${playdate.id}`)}
               >
                 View Playdate
