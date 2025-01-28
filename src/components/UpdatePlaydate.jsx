@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { fetchPlaydatesById, updatePlaydate } from "../Services/playdateService";
-import { createParticipants } from "../Services/participantsService";
 import { useAuth } from "./AuthContext";
 import { Navigate, useParams } from "react-router-dom";
 import { fetchSports } from "../Services/sportService";
@@ -101,10 +100,6 @@ const UpdatePlaydate = () => {
       const updated = await updatePlaydate(playdateId, updatedPlaydate);  
       setUpdatedPlaydate(updated);
       console.log("Playdate updated successfully:", updated);
-
-      // You can also update participants if needed
-      const participantsData = { user_id: user.userId };
-      await createParticipants(playdateId, participantsData);
     } catch (err) {
       console.error("Error updating playdate:", err);
       setError("Failed to update playdate. Please try again.");
