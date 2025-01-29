@@ -1,13 +1,13 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiLogin } from '../Services/authSevice';
+import { useAuth } from './AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
