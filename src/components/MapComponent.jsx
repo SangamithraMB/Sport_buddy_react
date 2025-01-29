@@ -13,7 +13,7 @@ const MapComponent = ({ latitude, longitude }) => {
 
   // Custom icon configuration
   const customIcon = new L.Icon({
-    iconUrl: '/assets/leaflet-tiles/marker-icon.png', // Custom marker icon URL (ensure it's in the public folder)
+    iconUrl: '/assets/leaflet-tiles/marker-icon.png', 
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],

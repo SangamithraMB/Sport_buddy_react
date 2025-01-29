@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('jwtToken');
     if (storedToken) {
       setUser(storedToken);
     }

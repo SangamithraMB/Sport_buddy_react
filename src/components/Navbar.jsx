@@ -18,7 +18,7 @@ function Navbar() {
 
     setTimeout(() => {
       setLogoutMessage("");
-    }, 3000);
+    }, 800);
   };
 
   const cancelLogout = () => {
@@ -49,9 +49,9 @@ function Navbar() {
 
       {showLogoutConfirm && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg shadow-lg z-60">
             <p className="text-lg mb-4">Are you sure you want to log out?</p>
-            <div className="flex justify-around space-x-4">
+            <div className="flex justify-around space-x-4 z-60">
               <button onClick={confirmLogout} className="bg-blue-500 text-white px-8 py-2 rounded-md hover:bg-blue-600">Yes</button>
               <button onClick={cancelLogout} className="bg-gray-500 text-white px-8 py-2 rounded-md hover:bg-gray-600">No</button>
             </div>
