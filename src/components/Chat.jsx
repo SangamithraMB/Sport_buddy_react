@@ -31,20 +31,17 @@ const Chat = () => {
             const userMapping = {};
             users.forEach((user) => {
                 userMapping[user.id] = user.first_name;
-                console.log(user.first_name);
             });
             setUserMap(userMapping);
-            const filteredUsers = users.filter((user) => user.id !== user.id); // Exclude logged-in user
+            const filteredUsers = users.filter((user) => user.userId !== user?.id); // Exclude logged-in user
         setUsers(filteredUsers);
-        if (filteredUsers.length > 0) {
-          setSelectedUser(filteredUsers[0]);
-        }
+        console.log("filteredUsers", filteredUsers);
       } catch (err) { 
           console.error("Error fetching users:", err);
       }
     }
     getUsers();
-}, []);
+}, [user?.id]);
 
   useEffect(() => {
     const getChat = async () => {
@@ -116,23 +113,26 @@ const Chat = () => {
       <h2 className="text-xl font-bold mb-2 text-gray-700">Chat Room: {room}</h2>
       {/* User selection dropdown */}
       <div className="mb-2">
-        <label className="text-gray-600 text-sm">Chat with:</label>
-        <select
-          value={selectedUser?.id || ""}
-          onChange={(e) => {
-            const userId = e.target.value;
-            const userObj = users.find((u) => u.id.toString() === userId);
-            setSelectedUser(userObj);
-          }}
-          className="ml-2 p-1 border rounded-md"
-        >
-          {users.map((u) => (
-            <option key={u.id} value={u.id}>
-              {u.first_name} {/* Display name instead of ID */}
-            </option>
-          ))}
-        </select>
-      </div>
+  <label htmlFor="users" className="text-gray-600 text-sm">Chat with:</label>
+  <select
+    name="users"
+    id="users" // ✅ Added for accessibility
+    value={selectedUser?.id || ""} // ✅ Avoids errors when `selectedUser` is `null`
+    onChange={(e) => {
+      const userId = e.target.value;
+      const userObj = users.find((user) => user.id.toString() === userId);
+      setSelectedUser(userObj || null);
+    }}
+    className="ml-2 p-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+  >
+    <option value="">--Select a User--</option>
+    {users.map((user) => (
+      <option key={user.id} value={user.id}> {/* ✅ Uses `id` for unique values */}
+        {user.first_name} {/* Display name correctly */}
+      </option>
+    ))}
+  </select>
+</div>
 
          {/* Chat messages */}
       <div className="h-64 overflow-y-auto p-2 border border-gray-300 rounded-md mb-2 bg-gray-100">
