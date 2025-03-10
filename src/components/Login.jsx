@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center bg-purple-300 items-center min-h-screen bg-[url(/assets/login.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay">
+    <div className="h-screen w-screen absolute inset-0 z-0 flex justify-center bg-purple-300 items-center min-h-screen bg-[url(/assets/login.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm opacity-80">
         <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">Login</h2>
         

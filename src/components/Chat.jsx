@@ -1,30 +1,23 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import socket from "./socket";
 import { useAuth } from "./AuthContext";
+import PropTypes from 'prop-types';
 
 
-const Chat = () => {
+const Chat = (props) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]); 
   const { user } = useAuth();
-//   const room = "SportBuddy";
+  const roomId = props.roomId;
+  const receiverId = props.receiverId;
   // eslint-disable-next-line no-unused-vars
-  const [room, setRoom] = useState("SportBuddy");
-//   let [notJoined, setNotJoined] = useState(true);
+  let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
-  const socket = io("http://localhost:5000", {
-    transports: ["websocket"],
-    withCredentials: true,
-    query: { token },
-    extraHeaders: {
-        Authorization: `Bearer ${token}`,
-    },
-  });
 
   useEffect(() => {
     if (user?.firstName) {
-        console.log('emitting to join room', { username: user.firstName, room });
-      socket.emit("join_room", { username: user.firstName, room, token });
+        console.log('emitting to join room', { username: user.firstName, room: roomId });
+      socket.emit("join_room", { username: user.firstName, room: roomId, token });
     //   setNotJoined(false);
 
       const messageListener = (data) => {
@@ -33,9 +26,28 @@ const Chat = () => {
       };
 
       socket.on("receive_message", messageListener);
+      socket.on("chat_history", (data) => {
+        console.log('chat history:', data);
+        setMessages((prevMessages) => [...data.messages, ...prevMessages]);
+      });
+
+      socket.on("room_joined", (data) => {
+        console.log('room joined:', data);
+        messageListener(data);
+        setJoined((prevJoined) => {
+            console.log("Before updating, joined value:", prevJoined);
+            
+            if (!prevJoined) {
+                console.log("Emitting to get chat history:", { username: user.firstName, room: roomId, token, receiver_id: receiverId });
+                socket.emit("get_chat_history", { username: user.firstName, room: roomId, token, receiver_id: receiverId });
+            }
+    
+            return true; // Updates state correctly
+        });
+      });
 
       return () => {
-        socket.emit("leave_room", { room });
+        socket.emit("leave_room", { room: roomId });
         socket.off("receive_message", messageListener);
       };
     }
@@ -43,11 +55,13 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-      socket.emit("send_message", { receiver_id: '2', date: new Date().toISOString(), message, room, token });
+        console.log('sending message:', message);
+      socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: roomId, token });
       setMessage("");
     }
   };
   const handleKeyDown = (e) => {
+    console.log('key pressed:', e.key);
     if (e.key === "Enter") {
       sendMessage();
     }
@@ -55,7 +69,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <h2>Chat Room: {room}</h2>
+      <h2>Chat Room: {roomId}</h2>
 
       <div className="chat-messages">
         {messages.map((msg, index) => (
@@ -80,6 +94,10 @@ const Chat = () => {
       </div>
     </div>
   );
+};
+Chat.propTypes = {
+  roomId: PropTypes.string,
+    receiverId: PropTypes.string
 };
 
 export default Chat;

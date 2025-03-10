@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchSports } from "../Services/sportService";
+import LiquidChrome from "./LiquidChrome"; // Import LiquidChrome
 
 function SportList() {
   const [sports, setSports] = useState([]);
@@ -23,34 +24,37 @@ function SportList() {
   }, []);
 
   return (
-    <div className="p-6 min-h-screen flex flex-col items-center bg-cover bg-center relative"
-         style={{ backgroundImage: "url('/assets/match.avif')" }}>
+    <div className="relative min-h-screen flex flex-col items-center justify-center">
       
-      <div className="absolute inset-0 bg-white opacity-80"></div>
+      {/* LiquidChrome Background */}
+      <div className="h-screen w-screen absolute w-full h-full z-0">
+        <LiquidChrome baseColor={[0.6, 0.9, 1]} secondaryColor={[1, 0.7, 0.9]} speed={0.2} amplitude={0.7} interactive={false} />
+      </div>
 
-      <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6 relative z-10">
-        Available Sports
-      </h2>
+      {/* Content */}
+      <div className="relative z-10 p-6 w-full max-w-6xl text-center">
+        <h2 className="text-3xl font-semibold text-black-100 mb-6">Available Sports</h2>
 
-      {loading ? (
-        <p className="text-center text-gray-800 relative z-10">Loading...</p>
-      ) : error ? (
-        <p className="text-center text-red-500 relative z-10">{error}</p>
-      ) : sports.length === 0 ? (
-        <p className="text-center text-gray-700 relative z-10">No sports found.</p>
-      ) : (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-9 max-w-6xl mx-auto relative z-10">
-          {sports.map((sport) => (
-            <div
-              key={sport.id}
-              className="bg-green shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300"
-            >
-              <h3 className="text-xl font-medium text-gray-800">{sport.sport_name}</h3>
-              <p className="text-gray-600 text-sm mt-2">Type: {sport.sport_type}</p>
-            </div>
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <p className="text-white">Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : sports.length === 0 ? (
+          <p className="text-gray-300">No sports found.</p>
+        ) : (
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-9">
+            {sports.map((sport) => (
+              <div
+                key={sport.id}
+                className="bg-opacity-80 bg-blue-300 shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300"
+              >
+                <h3 className="text-xl font-medium text-white">{sport.sport_name}</h3>
+                <p className="text-gray-200 text-sm mt-2">Type: {sport.sport_type}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

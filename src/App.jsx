@@ -11,6 +11,7 @@ import Login from './components/Login';
 import { AuthProvider } from './components/AuthProvider';
 import ProtectedPage from './components/ProtectedPage';
 import UpdatePlaydate from './components/UpdatePlaydate';
+import Chat from './components/Chat';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/sports" element={<SportList />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/protected" element={<ProtectedPage />} />
           <Route path="/open-playdates/:playdateId" element={<PlaydateListById />} />
           <Route path="/update-playdate/:playdateId" element={<UpdatePlaydate />} />

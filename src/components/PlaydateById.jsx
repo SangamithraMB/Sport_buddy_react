@@ -11,6 +11,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import MapComponent from "./MapComponent";
 import { useNavigate } from "react-router-dom";
+import Chat from "./Chat";
 
 function PlaydateListById() {
   const { width, height } = useWindowSize();
@@ -66,7 +67,7 @@ function PlaydateListById() {
         alert("The room is full. You cannot join at this moment.");
         return;
       }
-  
+
       const newParticipant = await createParticipants(playdateId, {
         user_id: user.userId,
       });
@@ -83,7 +84,6 @@ function PlaydateListById() {
         setIsConfettiActive(false);
       }, 10000);
       return () => clearTimeout(timer);
-
     } catch (error) {
       console.error("Error adding participant:", error);
       alert("Failed to join. Please try again.");
@@ -130,7 +130,9 @@ function PlaydateListById() {
             <p className="text-lg text-gray-600 mb-2">
               🏅 {playdateById.sport_name}
             </p>
-            <p className="text-lg text-gray-600 mb-2">📍 {playdateById.address}</p>
+            <p className="text-lg text-gray-600 mb-2">
+              📍 {playdateById.address}
+            </p>
             <p className="text-lg text-gray-600 mb-4">📅 {playdateById.date}</p>
 
             {isCreator && (
@@ -143,7 +145,9 @@ function PlaydateListById() {
             )}
 
             <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">Participants:</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-2">
+                Participants:
+              </h3>
               {participants?.participants?.length > 0 ? (
                 <ul className="list-disc ml-6 text-gray-700 mb-2">
                   {participants.participants.map((participant) => (
@@ -159,7 +163,8 @@ function PlaydateListById() {
               </p>
             </div>
 
-            {participants.participants_count >= playdateById.max_participants && (
+            {participants.participants_count >=
+              playdateById.max_participants && (
               <p className="text-red-500 mt-6">
                 The room is full. You cannot join at this moment.
               </p>
@@ -192,6 +197,13 @@ function PlaydateListById() {
               longitude={playdateById.longitude}
             />
           </div>
+          {isUserInRoom ? (
+            <div>
+              <Chat roomId={playdateId} />
+            </div>
+          ) : (
+            <div>Join Playdate to Chat</div>
+          )}
         </div>
       ) : (
         <p className="text-center text-red-500">Playdate not found.</p>
