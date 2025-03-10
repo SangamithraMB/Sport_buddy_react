@@ -8,7 +8,8 @@ const Chat = (props) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]); 
   const { user } = useAuth();
-  const roomId = props.roomId;
+  const groupChatId = props.roomId;
+  const [room, setRoom] = useState(groupChatId);
   const receiverId = props.receiverId;
   // eslint-disable-next-line no-unused-vars
   let [joined, setJoined] = useState(false);
@@ -16,9 +17,19 @@ const Chat = (props) => {
 
   useEffect(() => {
     if (user?.firstName) {
-        console.log('emitting to join room', { username: user.firstName, room: roomId });
-      socket.emit("join_room", { username: user.firstName, room: roomId, token });
-    //   setNotJoined(false);
+      if (!room) {
+        const privateRoomId = [user.userId, receiverId].sort((a, b) => a - b).join("_");
+        console.log("emitting to join room", { username: user.firstName, room: privateRoomId });
+        socket.emit("join_room", { username: user.firstName, room: privateRoomId, token });
+      
+        // Set the state *after* emitting, ensuring we already used the correct room
+        setRoom(privateRoomId);
+      } else {
+        socket.emit("join_room", { username: user.firstName, room, token });
+      }
+
+      
+      
 
       const messageListener = (data) => {
         console.log('received message:', data);
@@ -38,8 +49,8 @@ const Chat = (props) => {
             console.log("Before updating, joined value:", prevJoined);
             
             if (!prevJoined) {
-                console.log("Emitting to get chat history:", { username: user.firstName, room: roomId, token, receiver_id: receiverId });
-                socket.emit("get_chat_history", { username: user.firstName, room: roomId, token, receiver_id: receiverId });
+                console.log("Emitting to get chat history:", { username: user.firstName, room: room, token, receiver_id: receiverId });
+                socket.emit("get_chat_history", { username: user.firstName, room: room, token, receiver_id: receiverId });
             }
     
             return true; // Updates state correctly
@@ -47,7 +58,7 @@ const Chat = (props) => {
       });
 
       return () => {
-        socket.emit("leave_room", { room: roomId });
+        socket.emit("leave_room", { room: groupChatId });
         socket.off("receive_message", messageListener);
       };
     }
@@ -56,12 +67,11 @@ const Chat = (props) => {
   const sendMessage = () => {
     if (message.trim() !== "") {
         console.log('sending message:', message);
-      socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: roomId, token });
+      socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: room, token });
       setMessage("");
     }
   };
   const handleKeyDown = (e) => {
-    console.log('key pressed:', e.key);
     if (e.key === "Enter") {
       sendMessage();
     }
@@ -69,7 +79,7 @@ const Chat = (props) => {
 
   return (
     <div className="chat-container">
-      <h2>Chat Room: {roomId}</h2>
+      <h2>Chat Room: {groupChatId || receiverId}</h2>
 
       <div className="chat-messages">
         {messages.map((msg, index) => (

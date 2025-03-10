@@ -86,7 +86,7 @@ const CreatePlaydate = () => {
   };
 
   return user ? (
-    <div className="flex justify-center items-center min-h-screen bg-gray-400 px-4 bg-[url(/assets/cla.avif)] bg-blend-overlay bg-cover bg-no-repeat bg-center">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden flex justify-center items-center min-h-screen bg-gray-400 px-4 bg-[url(/assets/cla.avif)] bg-blend-overlay bg-cover bg-no-repeat bg-center">
       <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-lg border border-gray-200 bg-opacity-60">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
           🎉 Create a New Playdate

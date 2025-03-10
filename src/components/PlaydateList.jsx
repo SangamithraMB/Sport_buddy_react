@@ -26,7 +26,7 @@ function PlaydateList() {
   }, [user]);
 
   return user ? (
-    <div className="p-8 bg-blue-100 min-h-screen bg-[url(/assets/court.avif)] bg-blend-overlay ">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden p-8 bg-blue-100 min-h-screen bg-[url(/assets/court.avif)] bg-blend-overlay ">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
         🏆 Open Playdates
       </h2>

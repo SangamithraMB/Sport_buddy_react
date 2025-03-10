@@ -24,7 +24,7 @@ function SportList() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden min-h-screen flex flex-col items-center justify-center">
       
       {/* LiquidChrome Background */}
       <div className="h-screen w-screen absolute w-full h-full z-0">

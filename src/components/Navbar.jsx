@@ -35,7 +35,6 @@ function Navbar() {
             <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
             <li><Link to="/sports" className="hover:text-gray-300">Sports</Link></li>
             <li><Link to="/users" className="hover:text-gray-300">Users</Link></li>
-            <li><Link to="/chat" className="hover:text-gray-300">Chat</Link></li>
             
             {user ? (
               <>

@@ -117,7 +117,7 @@ function PlaydateListById() {
   const isCreator = playdateById?.creator_id === user?.userId;
 
   return user ? (
-    <div className="p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/ball.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/ball.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
       {loading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : playdateById ? (
@@ -137,7 +137,7 @@ function PlaydateListById() {
 
             {isCreator && (
               <button
-                className="mt-4 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
+                className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
                 onClick={() => navigate(`/update-playdate/${playdateId}`)}
               >
                 Update Playdate
@@ -197,13 +197,14 @@ function PlaydateListById() {
               longitude={playdateById.longitude}
             />
           </div>
-          {isUserInRoom ? (
+         <div> {isUserInRoom ? (
             <div>
               <Chat roomId={playdateId} />
             </div>
           ) : (
             <div>Join Playdate to Chat</div>
           )}
+        </div>
         </div>
       ) : (
         <p className="text-center text-red-500">Playdate not found.</p>
