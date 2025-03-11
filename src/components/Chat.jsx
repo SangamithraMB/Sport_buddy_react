@@ -66,7 +66,7 @@ const Chat = (props) => {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-        console.log('sending message:', message);
+        console.log('sending message:', { receiver_id: receiverId, date: new Date().toISOString(), message, room: room});
       socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: room, token });
       setMessage("");
     }
