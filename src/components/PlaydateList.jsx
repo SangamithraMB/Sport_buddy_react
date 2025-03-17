@@ -28,14 +28,14 @@ function PlaydateList() {
   return user ? (
     <div className="h-screen w-screen absolute inset-0 z-0  bg-blue-100 pt-20">
       {/* Background Image with Overlay */}
-      <div className="h-full w-full absolute inset-0 z-0 bg-[url('/assets/playdate.jpg')] bg-overlay bg-cover bg-center">
+      <div className="h-full w-full absolute inset-0 z-0 bg-[url('/assets/playdateid.jpg')] bg-overlay bg-cover bg-center">
         <div className="absolute inset-0 bg-white/50"></div>
       </div>
 
       {/* Content Container */}
       <div className="relative z-10 p-8 max-w-7xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-center text-white drop-shadow-lg mb-10">
-          🏆 Open Playdates
+        <h2 className="text-4xl font-extrabold text-center text-black drop-shadow-lg mb-10">
+          🏆 Upcoming Playdates
         </h2>
 
         {loading ? (
@@ -75,7 +75,7 @@ function PlaydateList() {
 
                 {/* View Playdate Button */}
                 <button
-                  className="mt-4 px-5 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-900 transition transform hover:scale-105 self-start shadow-md"
+                  className="mt-4 px-5 py-3 bg-gradient-to-r from-gray-600 to-blue-800 text-white rounded-lg hover:from-blue-700 hover:to-gray-900 transition transform hover:scale-105 self-start shadow-md"
                   onClick={() => navigate(`/open-playdates/${playdate.id}`)}
                 >
                   View Playdate
