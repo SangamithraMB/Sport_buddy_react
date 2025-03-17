@@ -3,7 +3,6 @@ import socket from "./socket";
 import { useAuth } from "./AuthContext";
 import PropTypes from 'prop-types';
 
-
 const Chat = (props) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]); 
@@ -11,7 +10,6 @@ const Chat = (props) => {
   const groupChatId = props.roomId;
   const [room, setRoom] = useState(groupChatId);
   const receiverId = props.receiverId;
-  // eslint-disable-next-line no-unused-vars
   let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
 
@@ -19,26 +17,33 @@ const Chat = (props) => {
     if (user?.firstName) {
       if (!room) {
         const privateRoomId = [user.userId, receiverId].sort((a, b) => a - b).join("_");
-        console.log("emitting to join room", { username: user.firstName, room: privateRoomId });
         socket.emit("join_room", { username: user.firstName, room: privateRoomId, token });
-      
-        // Set the state *after* emitting, ensuring we already used the correct room
         setRoom(privateRoomId);
       } else {
         socket.emit("join_room", { username: user.firstName, room, token });
       }
 
       
-      
+      // Request Notification Permission
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(permission => console.log("New permission:", permission));
+      }
 
       const messageListener = (data) => {
         console.log('received message:', data);
         setMessages((prevMessages) => [...prevMessages, data]);
+
+        // Show a notification when a new message arrives
+        if (Notification.permission === "granted" && data.sender !== user.firstName) {
+          new Notification(`New message from ${data.sender}`, {
+            body: data.message,
+            icon: "/chat-icon.png", // Optional: Replace with your icon path
+          });
+        }
       };
 
       socket.on("receive_message", messageListener);
       socket.on("chat_history", (data) => {
-        console.log('chat history:', data);
         setMessages((prevMessages) => [...data.messages, ...prevMessages]);
       });
 
@@ -46,14 +51,10 @@ const Chat = (props) => {
         console.log('room joined:', data);
         messageListener(data);
         setJoined((prevJoined) => {
-            console.log("Before updating, joined value:", prevJoined);
-            
-            if (!prevJoined) {
-                console.log("Emitting to get chat history:", { username: user.firstName, room: room, token, receiver_id: receiverId });
-                socket.emit("get_chat_history", { username: user.firstName, room: room, token, receiver_id: receiverId });
-            }
-    
-            return true; // Updates state correctly
+          if (!prevJoined) {
+            socket.emit("get_chat_history", { username: user.firstName, room, token, receiver_id: receiverId });
+          }
+          return true;
         });
       });
 
@@ -66,11 +67,11 @@ const Chat = (props) => {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-        console.log('sending message:', { receiver_id: receiverId, date: new Date().toISOString(), message, room: room});
       socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: room, token });
       setMessage("");
     }
   };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       sendMessage();
@@ -99,15 +100,19 @@ const Chat = (props) => {
           className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
-        className="w-full py-2 px-4 bg-gradient-to-r from-green-300 to-blue-400 text-white rounded-md shadow-lg hover:from-blue-500 hover:to-green-400 transform transition duration-300 ease-in-out hover:scale-105"
-        onClick={sendMessage}>Send</button>
+          className="w-full py-2 px-4 bg-gradient-to-r from-green-300 to-blue-400 text-white rounded-md shadow-lg hover:from-blue-500 hover:to-green-400 transform transition duration-300 ease-in-out hover:scale-105"
+          onClick={sendMessage}
+        >
+          Send
+        </button>
       </div>
     </div>
   );
 };
+
 Chat.propTypes = {
   roomId: PropTypes.string,
-    receiverId: PropTypes.string
+  receiverId: PropTypes.string
 };
 
 export default Chat;
