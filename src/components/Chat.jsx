@@ -10,6 +10,7 @@ const Chat = (props) => {
   const groupChatId = props.roomId;
   const [room, setRoom] = useState(groupChatId);
   const receiverId = props.receiverId;
+  // eslint-disable-next-line no-unused-vars
   let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
 

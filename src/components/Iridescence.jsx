@@ -45,6 +45,8 @@ void main() {
 }
 `;
 
+import PropTypes from 'prop-types';
+
 export default function Iridescence({
   color = [1, 1, 1],
   speed = 1.0,
@@ -52,6 +54,12 @@ export default function Iridescence({
   mouseReact = true,
   ...rest
 }) {
+Iridescence.propTypes = {
+  color: PropTypes.arrayOf(PropTypes.number),
+  speed: PropTypes.number,
+  amplitude: PropTypes.number,
+  mouseReact: PropTypes.bool,
+};
   const ctnDom = useRef(null);
   const mousePos = useRef({ x: 0.5, y: 0.5 });
 
