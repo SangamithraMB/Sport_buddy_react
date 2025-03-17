@@ -27,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen w-screen absolute inset-0 z-0">
       {/* Left Section - Full Height Image */}
       <div className="w-1/2 h-full">
         <img
@@ -44,11 +44,11 @@ const Login = () => {
             Sign In
           </h2>
           <p className="text-gray-600 text-center mt-2">
-            Join our community for free access
+            Join SportBuddy for free access
           </p>
 
           {/* Social Login Buttons */}
-          <div className="flex gap-3 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 mt-4">
             <button className="flex items-center justify-center w-full py-2 border rounded-lg shadow-sm hover:bg-gray-100">
               <img
                 src="https://img.icons8.com/color/16/000000/google-logo.png"
