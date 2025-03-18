@@ -14,29 +14,26 @@ const Chat = (props) => {
   const { user } = useAuth();
   const groupChatId = props.roomId;
   const [room, setRoom] = useState(groupChatId);
-  // const receiverId = props.receiverId;
   let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
   const { receiverId, senderId} = useParams();
   const [receiverFirstName, setReceiverFirstName] = useState("");
   const [playdateName, setPlaydateName] = useState("");
 
-
   useEffect(() => {
     const getPlaydateName = async () => {
       try {
         const playdateData = await fetchPlaydatesById(groupChatId);
         if (playdateData) {
-          console.log(playdateData);
           setPlaydateName(playdateData.title);
         }
-      } catch (err) {   
+      } catch (err) {
         console.error("Error fetching playdate:", err);
-      } 
+      }
     };
     if (groupChatId) {
       getPlaydateName();
-    } 
+    }
   }, [groupChatId]);
 
   useEffect(() => {
@@ -44,7 +41,6 @@ const Chat = (props) => {
       try {
         const receiverData = await fetchUsersById(receiverId);
         if (receiverData) {
-          console.log(receiverData);
           setReceiverFirstName(receiverData.first_name);
         }
       } catch (err) {
@@ -59,7 +55,6 @@ const Chat = (props) => {
 
   useEffect(() => {
     if (user?.firstName || !receiverId || joined) {
-      console.log(receiverId, senderId); 
       if (!room) {
         const privateRoomId = [user.userId, receiverId].sort((a, b) => a - b).join("_");
         socket.emit("join_room", { username: user.firstName, room: privateRoomId, token });
@@ -98,7 +93,7 @@ const Chat = (props) => {
       });
 
       return () => {
-        socket.emit("leave_room", { room: groupChatId });
+        socket.emit("leave_room", { room: groupChatId, token: token });
         socket.off("receive_message", messageListener);
       };
     }
@@ -118,10 +113,10 @@ const Chat = (props) => {
   };
 
   return (
-    <div className={`flex flex-col  ${ playdateName ? 'h-[800px] w-[300px] bg-transparent' : 'h-[1000px] w-[1600px] justify-center bg-[url(/assets/chat.jpg)]'}  bg-gray-100 pt-29 rounded-2xl overflow-auto `}>
+    <div className={`flex flex-col ${playdateName ? 'h-[800px] sm:h-[600px] lg:h-[800px] w-full max-w-4xl bg-transparent' : 'h-[950px] w-full bg-[url(/assets/chat.jpg)] bg-cover'} bg-gray-100 pt-1 rounded-2xl overflow-auto`}>
       {/* Chat Header */}
       <div className="bg-indigo-600 text-white rounded-2xl p-4 shadow-md text-center">
-        <h2 className="text-lg font-semibold">Chat Room: {playdateName || receiverFirstName}</h2>
+        <h2 className="text-lg font-semibold">{playdateName || receiverFirstName}</h2>
       </div>
 
       {/* Chat Messages */}
@@ -148,10 +143,10 @@ const Chat = (props) => {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
-          className="flex-1 p-8 border flex-start rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="flex-1 p-2 sm:p-4 border flex-start rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
-          className="py-2 px-6 bg-indigo-600  text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-green-400 transition-transform transform hover:scale-105"
+          className="py-2 px-6 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition-all"
           onClick={sendMessage}
         >
           Send
