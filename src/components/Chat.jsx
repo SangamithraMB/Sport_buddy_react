@@ -5,6 +5,8 @@ import socket from "./socket";
 import { useAuth } from "./AuthContext";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import { fetchUsersById } from "../Services/userService";
+import { fetchPlaydatesById } from "../Services/playdateService";
 
 const Chat = (props) => {
   const [message, setMessage] = useState("");
@@ -16,11 +18,48 @@ const Chat = (props) => {
   let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
   const { receiverId, senderId} = useParams();
+  const [receiverFirstName, setReceiverFirstName] = useState("");
+  const [playdateName, setPlaydateName] = useState("");
 
 
   useEffect(() => {
+    const getPlaydateName = async () => {
+      try {
+        const playdateData = await fetchPlaydatesById(groupChatId);
+        if (playdateData) {
+          console.log(playdateData);
+          setPlaydateName(playdateData.title);
+        }
+      } catch (err) {   
+        console.error("Error fetching playdate:", err);
+      } 
+    };
+    if (groupChatId) {
+      getPlaydateName();
+    } 
+  }, [groupChatId]);
+
+  useEffect(() => {
+    const getReceiverFirstName = async () => {
+      try {
+        const receiverData = await fetchUsersById(receiverId);
+        if (receiverData) {
+          console.log(receiverData);
+          setReceiverFirstName(receiverData.first_name);
+        }
+      } catch (err) {
+        console.error("Error fetching receiver:", err);
+      }
+    };
+
+    if (receiverId) {
+      getReceiverFirstName();
+    }
+  }, [receiverId]);
+
+  useEffect(() => {
     if (user?.firstName || !receiverId || joined) {
-      console.log(receiverId, senderId)
+      console.log(receiverId, senderId); 
       if (!room) {
         const privateRoomId = [user.userId, receiverId].sort((a, b) => a - b).join("_");
         socket.emit("join_room", { username: user.firstName, room: privateRoomId, token });
@@ -39,7 +78,6 @@ const Chat = (props) => {
         if (Notification.permission === "granted" && data.sender !== user.firstName) {
           new Notification(`New message from ${data.sender}`, {
             body: data.message,
-            icon: "/chat-icon.png",
           });
         }
       };
@@ -80,10 +118,10 @@ const Chat = (props) => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 pt-16 rounded-2xl bg-transparent">
+    <div className={`flex flex-col  ${ playdateName ? 'h-[800px] w-[300px] bg-transparent' : 'h-[1000px] w-[1600px] justify-center bg-[url(/assets/chat.jpg)]'}  bg-gray-100 pt-29 rounded-2xl overflow-auto `}>
       {/* Chat Header */}
       <div className="bg-indigo-600 text-white rounded-2xl p-4 shadow-md text-center">
-        <h2 className="text-lg font-semibold">Chat Room: {groupChatId || receiverId}</h2>
+        <h2 className="text-lg font-semibold">Chat Room: {playdateName || receiverFirstName}</h2>
       </div>
 
       {/* Chat Messages */}

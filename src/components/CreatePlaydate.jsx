@@ -207,21 +207,22 @@ const CreatePlaydate = () => {
         {createdPlaydate && (
           <div className="mt-6 bg-green-100 p-4 rounded-md text-green-700 border border-green-300">
             <h3 className="text-lg font-semibold">✅ Playdate Created Successfully!</h3>
-            <p><strong>Title:</strong> {createdPlaydate.title}</p>
+            {/* <p><strong>Title:</strong> {createdPlaydate.title}</p>
             <p><strong>Sport:</strong> {selectedSport}</p>
             <p><strong>Address:</strong> {createdPlaydate.address}</p>
             <p><strong>Date:</strong> {new Date(createdPlaydate.date).toLocaleDateString()}</p>
             <p><strong>Time:</strong> {new Date(createdPlaydate.date).toLocaleTimeString()}</p>
-            <p><strong>Max Participants:</strong> {createdPlaydate.max_participants}</p>
+            <p><strong>Max Participants:</strong> {createdPlaydate.max_participants}</p> */}
           </div>
         )}
-      </div>
-      <div className="mt-6"><button
-          className="bg-black hover:bg-black text-white font-semibold py-3 px-6 rounded-lg shadow-md transition"
+         <div className="mt-6"><button
+          className="w-full p-2 bg-black text-white rounded-md hover:bg-blue-700 transition transform hover:scale-105"
           onClick={() => navigate("/open-playdates")}
         >
           Back to Playdates
         </button></div>
+      </div>
+     
       </div>
   ) : (
     <Navigate to="/login" />

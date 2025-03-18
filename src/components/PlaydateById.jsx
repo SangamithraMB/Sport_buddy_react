@@ -11,7 +11,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import MapComponent from "./MapComponent";
 import { useNavigate } from "react-router-dom";
-import Chat from "./Chat";
+import ChatPopup from "./ChatPopup";
 
 function PlaydateListById() {
   const { width, height } = useWindowSize();
@@ -117,27 +117,27 @@ function PlaydateListById() {
   const isCreator = playdateById?.creator_id === user?.userId;
 
   return user ? (
-    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/plid.jpg)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
+    <div className="h-screen w-screen absolute inset-0 z-0 p-8 bg-gray-500 flex justify-between items-center bg-[url(/assets/plid.jpg)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
       {loading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : playdateById ? (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-[90%] flex flex-col md:flex-row bg-opacity-55 min-h-[80vh]">
+        <div className="bg-gray-800/40 shadow-lg rounded-lg p-6 w-full max-w-[70%] flex flex-col md:flex-row bg-opacity-55 min-h-[80vh]">
           {/* Content area */}
           <div className="flex-1 p-6">
-            <h1 className="text-3xl font-semibold text-gray-800 mb-2">
+            <h1 className="text-3xl font-semibold text-black mb-2">
               {playdateById.title}
             </h1>
-            <p className="text-lg text-gray-600 mb-2">
+            <p className="text-lg text-gray-800 mb-2">
               🏅 {playdateById.sport_name}
             </p>
-            <p className="text-lg text-gray-600 mb-2">
+            <p className="text-lg text-gray-800 mb-2">
               📍 {playdateById.address}
             </p>
-            <p className="text-lg text-gray-600 mb-4">📅 {playdateById.date}</p>
+            <p className="text-lg text-gray-800 mb-4">📅 {playdateById.date}</p>
 
             {isCreator && (
               <button
-                className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
+                className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-900 transition"
                 onClick={() => navigate(`/update-playdate/${playdateId}`)}
               >
                 Update Playdate
@@ -173,7 +173,7 @@ function PlaydateListById() {
             {isUserInRoom ? (
               <div>
                 <button
-                  className="mt-6 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
+                  className="mt-4 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-900 transition"
                   onClick={handlePlaydateRevoke}
                 >
                   Revoke
@@ -197,9 +197,9 @@ function PlaydateListById() {
               longitude={playdateById.longitude}
             />
           </div>
-         <div> {isUserInRoom ? (
-            <div>
-              <Chat roomId={playdateId} />
+          <div> {isUserInRoom ? (
+            <div className="fixed bottom-4 right-4 flex justify-end w-100 shadow-lg rounded-lg overflow-hidden border bg-white">
+              {isUserInRoom && <ChatPopup roomId={playdateId} />}
             </div>
           ) : (
             <div>Join Playdate to Chat</div>
