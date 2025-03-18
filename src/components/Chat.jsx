@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import socket from "./socket";
 import { useAuth } from "./AuthContext";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const Chat = (props) => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]); 
+  const [messages, setMessages] = useState([]);
   const { user } = useAuth();
   const groupChatId = props.roomId;
   const [room, setRoom] = useState(groupChatId);
@@ -25,20 +25,17 @@ const Chat = (props) => {
         socket.emit("join_room", { username: user.firstName, room, token });
       }
 
-      // Request Notification Permission
       if (Notification.permission !== "granted") {
-        Notification.requestPermission().then(permission => console.log("New permission:", permission));
+        Notification.requestPermission().then((permission) => console.log("New permission:", permission));
       }
 
       const messageListener = (data) => {
-        console.log('received message:', data);
         setMessages((prevMessages) => [...prevMessages, data]);
 
-        // Show a notification when a new message arrives
         if (Notification.permission === "granted" && data.sender !== user.firstName) {
           new Notification(`New message from ${data.sender}`, {
             body: data.message,
-            icon: "/chat-icon.png", // Optional: Replace with your icon path
+            icon: "/chat-icon.png",
           });
         }
       };
@@ -49,7 +46,6 @@ const Chat = (props) => {
       });
 
       socket.on("room_joined", (data) => {
-        console.log('room joined:', data);
         messageListener(data);
         setJoined((prevJoined) => {
           if (!prevJoined) {
@@ -68,7 +64,7 @@ const Chat = (props) => {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-      socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room: room, token });
+      socket.emit("send_message", { receiver_id: receiverId, date: new Date().toISOString(), message, room, token });
       setMessage("");
     }
   };
@@ -80,28 +76,40 @@ const Chat = (props) => {
   };
 
   return (
-    <div className="chat-container">
-      <h2>Chat Room: {groupChatId || receiverId}</h2>
+    <div className="flex flex-col h-screen bg-gray-100 pt-16">
+      {/* Chat Header */}
+      <div className="bg-indigo-600 text-white p-4 shadow-md text-center">
+        <h2 className="text-lg font-semibold">Chat Room: {groupChatId || receiverId}</h2>
+      </div>
 
-      <div className="chat-messages">
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2">
         {messages.map((msg, index) => (
-          <p key={index}>
-            <strong>{msg.sender}:</strong> {msg.message}
-          </p>
+          <div key={index} className={`flex ${msg.sender === user.firstName ? "justify-end" : "justify-start"}`}>
+            <div
+              className={`max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow-md ${
+                msg.sender === user.firstName ? "bg-indigo-300 text-white self-end" : "bg-gray-200 text-gray-900 self-start"
+              }`}
+            >
+              <p className="text-sm font-semibold">{msg.sender}</p>
+              <p className="text-md">{msg.message}</p>
+            </div>
+          </div>
         ))}
       </div>
 
-      <div className="chat-input">
+      {/* Chat Input */}
+      <div className="bg-white p-4 shadow-lg flex items-center gap-2">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message"
-          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Type a message..."
+          className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
-          className="w-full py-2 px-4 bg-gradient-to-r from-green-300 to-blue-400 text-white rounded-md shadow-lg hover:from-blue-500 hover:to-green-400 transform transition duration-300 ease-in-out hover:scale-105"
+          className="py-2 px-6 bg-indigo-600  text-white rounded-md shadow-lg hover:from-blue-500 hover:to-green-400 transition-transform transform hover:scale-105"
           onClick={sendMessage}
         >
           Send
@@ -113,7 +121,7 @@ const Chat = (props) => {
 
 Chat.propTypes = {
   roomId: PropTypes.string,
-  receiverId: PropTypes.string
+  receiverId: PropTypes.string,
 };
 
 export default Chat;
