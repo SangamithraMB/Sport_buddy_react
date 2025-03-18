@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPlaydates } from "../Services/playdateService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -12,12 +12,22 @@ function PlaydateList() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedSport = searchParams.get("sport") || "";
 
   useEffect(() => {
     const getPlaydates = async () => {
       try {
         const playdatesData = await fetchPlaydates();
-        setPlaydates(playdatesData);
+        setPlaydates(() => {
+          return selectedSport
+          ? playdatesData.filter((pd) => {
+
+console.log("pd.sportId", pd, selectedSport);
+            return pd.sport_name.toLowerCase() === selectedSport.toLowerCase() })
+          : playdatesData;
+        });
+
       } catch (err) {
         console.error("Error fetching playdates:", err);
         setError("Failed to load playdates");
@@ -28,9 +38,12 @@ function PlaydateList() {
     if (user) getPlaydates();
   }, [user]);
 
+  // Filter playdates based on selected sport
+
+
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -63,7 +76,7 @@ function PlaydateList() {
       {/* Content Container */}
       <div className="relative z-10 p-8 max-w-7xl mx-auto">
         <h2 className="text-4xl font-extrabold text-center text-black drop-shadow-lg mb-10">
-          🏆 Upcoming Playdates
+        Play. Connect. Repeat.
         </h2>
 
         {loading ? (
@@ -75,16 +88,16 @@ function PlaydateList() {
             {error}
           </p>
         ) : playdates.length === 0 ? (
-          <p className="text-center text-white text-lg">No playdates available.</p>
+          <p className="text-center text-black text-lg">No playdates available.</p>
         ) : (
           <Slider {...settings}>
             {playdates.map((playdate) => (
               <div
                 key={playdate.id}
-                className="bg-gray-400 shadow-lg rounded-2xl p-6 hover:shadow-2xl transition duration-300 border border-gray-200 flex flex-col justify-between h-full transform hover:scale-[1.02] mx-2"
+                className=" bg-gray-800/40 shadow-lg rounded-2xl p-6 hover:shadow-2xl transition duration-300 border border-gray-200 flex flex-col justify-between h-full transform hover:scale-[1.02] mx-2"
               >
                 {/* Playdate Details */}
-                <div>
+                <div className="w-96 h-64 p-6">
                   <h3 className="text-2xl font-semibold text-black mb-2">
                     {playdate.title}
                   </h3>
@@ -110,6 +123,14 @@ function PlaydateList() {
             ))}
           </Slider>
         )}
+        <div className="mt-6 w-full flex justify-center">
+        <button
+          className="bg-gray-800 hover:bg-black text-white font-semibold py-3 px-6 rounded-lg shadow-md transition"
+          onClick={() => navigate("/playdates")}
+        >
+          + Create New Playdate
+        </button>
+      </div>
       </div>
     </div>
   ) : (

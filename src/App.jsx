@@ -23,7 +23,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/sports" element={<SportList />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:receiverId/:senderId" element={<Chat />} />
           <Route path="/open-playdates/:playdateId" element={<PlaydateListById />} />
           <Route path="/update-playdate/:playdateId" element={<UpdatePlaydate />} />
           <Route path="/open-playdates" element={<PlaydateList />} />

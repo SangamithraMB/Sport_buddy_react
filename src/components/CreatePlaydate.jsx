@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { createPlaydate } from "../Services/playdateService";
 import { createParticipants } from "../Services/participantsService";
 import { useAuth } from "./AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { fetchSports } from "../Services/sportService";
 
 const CreatePlaydate = () => {
@@ -14,7 +14,9 @@ const CreatePlaydate = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
+  const navigate = useNavigate();
 
+  // eslint-disable-next-line no-unused-vars
   const [createdPlaydate, setCreatedPlaydate] = useState(null);
   const [error, setError] = useState(null);
 
@@ -200,7 +202,7 @@ const CreatePlaydate = () => {
             Create Playdate
           </button>
         </form>
-
+        
         {/* Success Message */}
         {createdPlaydate && (
           <div className="mt-6 bg-green-100 p-4 rounded-md text-green-700 border border-green-300">
@@ -214,7 +216,13 @@ const CreatePlaydate = () => {
           </div>
         )}
       </div>
-    </div>
+      <div className="mt-6"><button
+          className="bg-black hover:bg-black text-white font-semibold py-3 px-6 rounded-lg shadow-md transition"
+          onClick={() => navigate("/open-playdates")}
+        >
+          Back to Playdates
+        </button></div>
+      </div>
   ) : (
     <Navigate to="/login" />
   );

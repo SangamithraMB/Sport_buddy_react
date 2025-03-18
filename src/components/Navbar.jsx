@@ -40,7 +40,7 @@ function Navbar() {
       {/* Navbar */}
       <nav
         className={`fixed top-0 left-0 w-full transition-all duration-300 ${
-          isScrolled ? "bg-blue-100 shadow-lg" : "bg-transparent"
+          isScrolled ? "bg-transparent shadow-lg" : "bg-transparent"
         } bg-opacity-90 backdrop-blur-lg text-black p-4 z-50`}
       >
         <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-3">
@@ -66,14 +66,14 @@ function Navbar() {
               <>
                 <li>
                   <Link to="/open-playdates" className="hover:text-gray-200 transition-all duration-200">
-                    Open Playdates
+                    Playdates
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/playdates" className="hover:text-gray-200 transition-all duration-200">
                     Create Playdate
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <button onClick={handleLogout} className="hover:text-gray-200 transition-all duration-200">
                     Logout

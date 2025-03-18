@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { fetchUsers } from "../Services/userService";
 import { AuthContext } from "./AuthContext";
-import { Navigate } from "react-router-dom";
-import Chat from "./Chat";
+import { Navigate, useNavigate } from "react-router-dom";
+// import Chat from "./Chat";
 
 function UserList() {
   const { user } = useContext(AuthContext);
@@ -10,6 +10,7 @@ function UserList() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -29,6 +30,10 @@ function UserList() {
 
   if (!user) return <Navigate to="/login" />;
 
+  const handleUserSelect = (selectedUser) => {
+    navigate(`/chat/${selectedUser.id}/${user.userId}`);
+  };
+
   return (
     <div className="h-screen w-screen absolute inset-0 z-0  flex flex-col items-center justify-center bg-[url('/assets/user.jpg')] bg-cover bg-center">
   {/* Overlay for better readability */}
@@ -43,7 +48,7 @@ function UserList() {
         >
           Back to SportBuddies
         </button>
-        <Chat receiverId={selectedUser.id} senderId={user.userId} />
+        {/* <Chat receiverId={selectedUser.id} senderId={user.userId} /> */}
       </div>
     ) : (
       <>
@@ -64,10 +69,10 @@ function UserList() {
             {users.map((u) => (
               <div
                 key={u.id}
-                onClick={() => setSelectedUser(u)}
-                className="bg-white/30 backdrop-blur-lg shadow-lg rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
+                onClick={() => handleUserSelect(u)}
+                className="bg-gray-800/40 backdrop-blur-lg shadow-lg rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
               >
-                <h3 className="text-xl font-medium text-black">
+                <h3 className="text-xl font-medium text-gray-900">
                   {u.first_name} {u.last_name}
                 </h3>
                 <p className="text-gray-900 text-sm mt-2">@{u.username}</p>
