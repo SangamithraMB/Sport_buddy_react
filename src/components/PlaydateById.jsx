@@ -117,99 +117,102 @@ function PlaydateListById() {
   const isCreator = playdateById?.creator_id === user?.userId;
 
   return user ? (
-    <div className="h-screen w-screen absolute inset-0 z-0 p-8 bg-gray-500 flex justify-between items-center bg-[url(/assets/plid.jpg)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
-      {loading ? (
-        <p className="text-center text-gray-600">Loading...</p>
-      ) : playdateById ? (
-        <div className="bg-gray-800/40 shadow-lg rounded-lg p-6 w-full max-w-[70%] flex flex-col md:flex-row bg-opacity-55 min-h-[80vh]">
-          {/* Content area */}
-          <div className="flex-1 p-6">
-            <h1 className="text-3xl font-semibold text-black mb-2">
-              {playdateById.title}
-            </h1>
-            <p className="text-lg text-gray-800 mb-2">
-              🏅 {playdateById.sport_name}
-            </p>
-            <p className="text-lg text-gray-800 mb-2">
-              📍 {playdateById.address}
-            </p>
-            <p className="text-lg text-gray-800 mb-4">📅 {playdateById.date}</p>
+    <div className="h-screen w-screen absolute inset-0 z-0 p-8 bg-gray-500 flex justify-between items-center bg-[url(/assets/plid.jpg)] bg-cover bg-no-repeat bg-center bg-blend-overlay">
+  {loading ? (
+    <p className="text-center text-gray-600">Loading...</p>
+  ) : playdateById ? (
+    <div className="bg-gray-800/40 shadow-lg rounded-lg p-6 w-full max-w-[70%] flex flex-col md:flex-row bg-opacity-55 min-h-[80vh]">
+      {/* Content area */}
+      <div className="flex-1 p-6">
+        <h1 className="text-3xl font-semibold text-black mb-2">
+          {playdateById.title}
+        </h1>
+        <p className="text-lg text-gray-800 mb-2">
+          🏅 {playdateById.sport_name}
+        </p>
+        <p className="text-lg text-gray-800 mb-2">
+          📍 {playdateById.address}
+        </p>
+        <p className="text-lg text-gray-800 mb-4">📅 {playdateById.date}</p>
 
-            {isCreator && (
-              <button
-                className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-900 transition"
-                onClick={() => navigate(`/update-playdate/${playdateId}`)}
-              >
-                Update Playdate
-              </button>
-            )}
+        {isCreator && (
+          <button
+            className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-900 transition"
+            onClick={() => navigate(`/update-playdate/${playdateId}`)}
+          >
+            Update Playdate
+          </button>
+        )}
 
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-2">
-                Participants:
-              </h3>
-              {participants?.participants?.length > 0 ? (
-                <ul className="list-disc ml-6 text-gray-700 mb-2">
-                  {participants.participants.map((participant) => (
-                    <li key={participant.id}>{participant.username}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-500">No participants yet.</p>
-              )}
-              <p className="text-gray-700 mt-2 mb-4">
-                <strong>Total Joined:</strong> {participants.participants_count}{" "}
-                / {participants.max_participants}
-              </p>
-            </div>
-
-            {participants.participants_count >=
-              playdateById.max_participants && (
-              <p className="text-red-500 mt-6">
-                The room is full. You cannot join at this moment.
-              </p>
-            )}
-
-            {isUserInRoom ? (
-              <div>
-                <button
-                  className="mt-4 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-900 transition"
-                  onClick={handlePlaydateRevoke}
-                >
-                  Revoke
-                </button>
-                {isConfettiActive && <Confetti width={width} height={height} />}
-              </div>
-            ) : (
-              <button
-                className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-                onClick={handlePlaydateJoin}
-              >
-                Join Playdate
-              </button>
-            )}
-          </div>
-
-          {/* Map area */}
-          <div className="flex-1 h-96 p-4">
-            <MapComponent
-              latitude={playdateById.latitude}
-              longitude={playdateById.longitude}
-            />
-          </div>
-          <div> {isUserInRoom ? (
-            <div className="fixed bottom-4 right-4 flex justify-end w-100 shadow-lg rounded-lg overflow-hidden border bg-white">
-              {isUserInRoom && <ChatPopup roomId={playdateId} />}
-            </div>
+        <div className="mt-4">
+          <h3 className="text-lg font-medium text-gray-800 mb-2">
+            Participants:
+          </h3>
+          {participants?.participants?.length > 0 ? (
+            <ul className="list-disc ml-6 text-gray-700 mb-2">
+              {participants.participants.map((participant) => (
+                <li key={participant.id}>{participant.username}</li>
+              ))}
+            </ul>
           ) : (
-            <div>Join Playdate to Chat</div>
+            <p className="text-gray-500">No participants yet.</p>
           )}
+          <p className="text-gray-700 mt-2 mb-4">
+            <strong>Total Joined:</strong> {participants.participants_count} /{" "}
+            {participants.max_participants}
+          </p>
         </div>
-        </div>
-      ) : (
-        <p className="text-center text-red-500">Playdate not found.</p>
-      )}
-    </div>
+
+        {participants.participants_count >= playdateById.max_participants && (
+          <p className="text-red-500 mt-6">
+            The room is full. You cannot join at this moment.
+          </p>
+        )}
+
+        {isUserInRoom ? (
+          <div>
+            <button
+              className="mt-4 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-900 transition"
+              onClick={handlePlaydateRevoke}
+            >
+              Revoke
+            </button>
+            {isConfettiActive && <Confetti width={width} height={height} />}
+          </div>
+        ) : (
+          <button
+            className="mt-6 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+            onClick={handlePlaydateJoin}
+          >
+            Join Playdate
+          </button>
+        )}
+      </div>
+
+      {/* Map area */}
+      <div className={"flex-1 h-96 md:h-auto p-4 relative z-10"}>
+        <MapComponent
+          latitude={playdateById.latitude}
+          longitude={playdateById.longitude}
+        />
+      </div>
+      {/* Chat Popup */}
+      <div className="absolute top-4 left-4 right-4 z-60">
+        {isUserInRoom ? (
+          <div className="fixed z-index bottom-4 right-4 flex justify-end w-100 shadow-lg rounded-lg overflow-hidden border bg-white">
+            {isUserInRoom && <ChatPopup roomId={playdateId} />}
+          </div>
+        ) : (
+          <div className="fixed bottom-4 right-4 flex justify-end w-100 shadow-lg rounded-lg overflow-hidden border bg-gray-100 text-xl">
+            <h1>*Join Playdate to Chat</h1>
+          </div>
+        )}
+      </div>
+    </div> 
+  ) : (
+    <p className="text-center text-red-500">Playdate not found.</p>
+  )}
+</div>
   ) : (
     <Navigate to="/login" />
   );
