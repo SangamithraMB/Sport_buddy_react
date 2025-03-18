@@ -41,7 +41,7 @@ function CreateUser() {
   };
 
   return (
-    <div className="h-screen w-screen absolute inset-0 z-0 flex justify-center items-center bg-[url('/assets/reg.jpg')] bg-cover bg-no-repeat bg-center relative">
+    <div className="h-screen w-screen absolute inset-0 z-0 flex justify-center items-center bg-[url('/assets/reg.jpg')] bg-cover bg-no-repeat bg-center ">
       <div className="absolute inset-0 bg-black bg-opacity-30 backdrop-blur-md"></div> {/* Blurred overlay */}
       
       <div className="w-full max-w-4xl flex items-center justify-center gap-10 relative z-10 px-8">

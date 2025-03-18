@@ -117,11 +117,11 @@ function PlaydateListById() {
   const isCreator = playdateById?.creator_id === user?.userId;
 
   return user ? (
-    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/ball.avif)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden p-8 bg-gray-500 min-h-screen flex justify-center items-center bg-[url(/assets/plid.jpg)] bg-cover bg-no-repeat bg-center bg-blend-overlay ">
       {loading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : playdateById ? (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-7xl flex flex-col md:flex-row bg-opacity-55">
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-[90%] flex flex-col md:flex-row bg-opacity-55 min-h-[80vh]">
           {/* Content area */}
           <div className="flex-1 p-6">
             <h1 className="text-3xl font-semibold text-gray-800 mb-2">

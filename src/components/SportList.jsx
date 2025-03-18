@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { fetchSports } from "../Services/sportService";
-import LiquidChrome from "./LiquidChrome"; // Import LiquidChrome
 
 function SportList() {
   const [sports, setSports] = useState([]);
@@ -24,13 +23,8 @@ function SportList() {
   }, []);
 
   return (
-    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden min-h-screen flex flex-col items-center justify-center">
-      
-      {/* LiquidChrome Background */}
-      <div className="h-screen w-screen absolute w-full h-full z-0">
-        <LiquidChrome baseColor={[0.6, 0.9, 1]} secondaryColor={[1, 0.7, 0.9]} speed={0.2} amplitude={0.7} interactive={false} />
-      </div>
-
+    <div className="absolute inset-0 z-0 w-full h-full overflow-hidden bg-[url('/assets/sport.jpg')] bg-cover bg-center flex flex-col items-center justify-center">
+      <div className="absolute inset-0 bg-white opacity-80"></div>
       {/* Content */}
       <div className="relative z-10 p-6 w-full max-w-6xl text-center">
         <h2 className="text-3xl font-semibold text-black-100 mb-6">Available Sports</h2>
@@ -46,7 +40,7 @@ function SportList() {
             {sports.map((sport) => (
               <div
                 key={sport.id}
-                className="bg-opacity-80 bg-blue-300 shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300"
+                className="bg-opacity-80 bg-gray-700 shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300"
               >
                 <h3 className="text-xl font-medium text-white">{sport.sport_name}</h3>
                 <p className="text-gray-200 text-sm mt-2">Type: {sport.sport_type}</p>

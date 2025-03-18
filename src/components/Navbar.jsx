@@ -87,11 +87,6 @@ function Navbar() {
                     Login
                   </Link>
                 </li>
-                <li>
-                  <Link to="/add-user" className="hover:text-gray-200 transition-all duration-200">
-                    Sign-Up
-                  </Link>
-                </li>
               </>
             )}
           </ul>

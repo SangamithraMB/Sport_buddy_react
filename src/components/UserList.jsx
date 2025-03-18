@@ -30,50 +30,55 @@ function UserList() {
   if (!user) return <Navigate to="/login" />;
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      {selectedUser ? (
-        <div>
-          <button
-            onClick={() => setSelectedUser(null)}
-            className="mb-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700 transition duration-200"
-          >
-            Back to SportBuddies
-          </button>
-          <Chat receiverId={selectedUser.id} senderId={user.userId} />
-        </div>
-      ) : (
-        <>
-          <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
-            Find Your SportBuddy
-          </h2>
+    <div className="h-screen w-screen absolute inset-0 z-0  flex flex-col items-center justify-center bg-[url('/assets/user.jpg')] bg-cover bg-center">
+  {/* Overlay for better readability */}
+  <div className="absolute inset-0 bg-white/60"></div>
 
-          {loading ? (
-            <div className="text-center text-gray-600 flex flex-col items-center">
-              <p className="mt-4 text-gray-600">Loading SportBuddies...</p>
-            </div>
-          ) : error ? (
-            <p className="text-center text-red-500 font-semibold">{error}</p>
-          ) : users.length === 0 ? (
-            <p className="text-center text-gray-500">No SportBuddies available yet.</p>
-          ) : (
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {users.map((u) => (
-                <div
-                  key={u.id}
-                  onClick={() => setSelectedUser(u)}
-                  className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
-                >
-                  <h3 className="text-xl font-medium text-gray-800">
-                    {u.first_name} {u.last_name}
-                  </h3>
-                  <p className="text-gray-600 text-sm mt-2">@{u.username}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </>
-      )}
-    </div>
+  <div className="relative z-10 p-8 w-full max-w-6xl text-center">
+    {selectedUser ? (
+      <div>
+        <button
+          onClick={() => setSelectedUser(null)}
+          className="mb-4 px-4 py-2 bg-gray-500 text-black rounded-md hover:bg-gray-700 transition duration-200"
+        >
+          Back to SportBuddies
+        </button>
+        <Chat receiverId={selectedUser.id} senderId={user.userId} />
+      </div>
+    ) : (
+      <>
+        <h2 className="text-3xl font-semibold text-black mb-6">
+          Find Your SportBuddy
+        </h2>
+
+        {loading ? (
+          <div className="text-center text-white flex flex-col items-center">
+            <p className="mt-4">Loading SportBuddies...</p>
+          </div>
+        ) : error ? (
+          <p className="text-center text-red-400 font-semibold">{error}</p>
+        ) : users.length === 0 ? (
+          <p className="text-center text-gray-300">No SportBuddies available yet.</p>
+        ) : (
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {users.map((u) => (
+              <div
+                key={u.id}
+                onClick={() => setSelectedUser(u)}
+                className="bg-white/30 backdrop-blur-lg shadow-lg rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
+              >
+                <h3 className="text-xl font-medium text-black">
+                  {u.first_name} {u.last_name}
+                </h3>
+                <p className="text-gray-900 text-sm mt-2">@{u.username}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    )}
+  </div>
+</div>
   );
 }
 

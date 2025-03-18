@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { fetchPlaydates } from "../Services/playdateService";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function PlaydateList() {
   const { user } = useAuth();
@@ -25,11 +28,36 @@ function PlaydateList() {
     if (user) getPlaydates();
   }, [user]);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return user ? (
-    <div className="h-screen w-screen absolute inset-0 z-0  bg-blue-100 pt-20">
+    <div className="h-screen w-screen absolute inset-0 z-0 bg-blue-100 pt-20">
       {/* Background Image with Overlay */}
       <div className="h-full w-full absolute inset-0 z-0 bg-[url('/assets/playdateid.jpg')] bg-overlay bg-cover bg-center">
-        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="absolute inset-0 bg-white/80"></div>
       </div>
 
       {/* Content Container */}
@@ -47,28 +75,26 @@ function PlaydateList() {
             {error}
           </p>
         ) : playdates.length === 0 ? (
-          <p className="text-center text-white text-lg">
-            No playdates available.
-          </p>
+          <p className="text-center text-white text-lg">No playdates available.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Slider {...settings}>
             {playdates.map((playdate) => (
               <div
                 key={playdate.id}
-                className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-2xl transition duration-300 border border-gray-200 flex flex-col justify-between h-full transform hover:scale-[1.02]"
+                className="bg-gray-400 shadow-lg rounded-2xl p-6 hover:shadow-2xl transition duration-300 border border-gray-200 flex flex-col justify-between h-full transform hover:scale-[1.02] mx-2"
               >
                 {/* Playdate Details */}
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-semibold text-black mb-2">
                     {playdate.title}
                   </h3>
-                  <p className="text-gray-600 flex items-center gap-2">
+                  <p className="text-gray-900 flex items-center gap-2">
                     🏅 <span>{playdate.sport_name}</span>
                   </p>
-                  <p className="text-gray-600 flex items-center gap-2">
+                  <p className="text-gray-900 flex items-center gap-2">
                     📍 <span>{playdate.address}</span>
                   </p>
-                  <p className="text-gray-600 flex items-center gap-2">
+                  <p className="text-gray-900 flex items-center gap-2">
                     📅 <span>{playdate.date}</span>
                   </p>
                 </div>
@@ -82,7 +108,7 @@ function PlaydateList() {
                 </button>
               </div>
             ))}
-          </div>
+          </Slider>
         )}
       </div>
     </div>

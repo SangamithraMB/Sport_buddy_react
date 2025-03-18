@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import socket from "./socket";
 import { useAuth } from "./AuthContext";
@@ -10,7 +12,6 @@ const Chat = (props) => {
   const groupChatId = props.roomId;
   const [room, setRoom] = useState(groupChatId);
   const receiverId = props.receiverId;
-  // eslint-disable-next-line no-unused-vars
   let [joined, setJoined] = useState(false);
   const token = localStorage.getItem("jwtToken");
 
@@ -24,7 +25,6 @@ const Chat = (props) => {
         socket.emit("join_room", { username: user.firstName, room, token });
       }
 
-      
       // Request Notification Permission
       if (Notification.permission !== "granted") {
         Notification.requestPermission().then(permission => console.log("New permission:", permission));
