@@ -106,6 +106,7 @@ const Chat = (props) => {
     }
   };
 
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       sendMessage();
