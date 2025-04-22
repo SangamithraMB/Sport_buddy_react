@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
+ /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import socket from "./socket";
 import { useAuth } from "./AuthContext";
@@ -121,7 +121,7 @@ const Chat = (props) => {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+      <div className="flex-1 overflow-y-auto scroll-smooth p-4 space-y-2">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.sender === user.firstName ? "justify-end" : "justify-start"}`}>
             <div

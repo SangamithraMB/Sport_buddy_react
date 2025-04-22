@@ -1,7 +1,9 @@
 import { io } from "socket.io-client";
 
 const token = localStorage.getItem("jwtToken");
-  const socket = io("http://0.0.0.0:5000", {
+const web_socket_url = import.meta.env.VITE_WEB_SOCKET_URL;
+console.log('ws', web_socket_url)
+  const socket = io(web_socket_url, {
     transports: ["websocket"],
     withCredentials: true,
     query: { token },
