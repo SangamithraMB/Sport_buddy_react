@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { createPlaydate } from "../Services/playdateService";
 import { createParticipants } from "../Services/participantsService";
 import { useAuth } from "./AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { fetchSports } from "../Services/sportService";
 
 const CreatePlaydate = () => {
@@ -14,7 +14,9 @@ const CreatePlaydate = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
+  const navigate = useNavigate();
 
+  // eslint-disable-next-line no-unused-vars
   const [createdPlaydate, setCreatedPlaydate] = useState(null);
   const [error, setError] = useState(null);
 
@@ -86,10 +88,10 @@ const CreatePlaydate = () => {
   };
 
   return user ? (
-    <div className="flex justify-center items-center min-h-screen bg-gray-400 px-4 bg-[url(/assets/cla.avif)] bg-blend-overlay bg-cover bg-no-repeat bg-center">
+    <div className="h-screen w-screen absolute inset-0 z-0  w-full h-screen overflow-hidden flex justify-center items-center min-h-screen bg-gray-400 px-4 bg-[url(/assets/cpl.jpg)] bg-blend-overlay bg-cover bg-no-repeat bg-center">
       <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-lg border border-gray-200 bg-opacity-60">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-          🎉 Create a New Playdate
+        Plan a New Playdate
         </h2>
 
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -195,26 +197,33 @@ const CreatePlaydate = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition transform hover:scale-105"
+            className="w-full p-2 bg-black text-white rounded-md hover:bg-blue-700 transition transform hover:scale-105"
           >
             Create Playdate
           </button>
         </form>
-
+        
         {/* Success Message */}
         {createdPlaydate && (
           <div className="mt-6 bg-green-100 p-4 rounded-md text-green-700 border border-green-300">
             <h3 className="text-lg font-semibold">✅ Playdate Created Successfully!</h3>
-            <p><strong>Title:</strong> {createdPlaydate.title}</p>
+            {/* <p><strong>Title:</strong> {createdPlaydate.title}</p>
             <p><strong>Sport:</strong> {selectedSport}</p>
             <p><strong>Address:</strong> {createdPlaydate.address}</p>
             <p><strong>Date:</strong> {new Date(createdPlaydate.date).toLocaleDateString()}</p>
             <p><strong>Time:</strong> {new Date(createdPlaydate.date).toLocaleTimeString()}</p>
-            <p><strong>Max Participants:</strong> {createdPlaydate.max_participants}</p>
+            <p><strong>Max Participants:</strong> {createdPlaydate.max_participants}</p> */}
           </div>
         )}
+         <div className="mt-6"><button
+          className="w-full p-2 bg-black text-white rounded-md hover:bg-blue-700 transition transform hover:scale-105"
+          onClick={() => navigate("/open-playdates")}
+        >
+          Back to Playdates
+        </button></div>
       </div>
-    </div>
+     
+      </div>
   ) : (
     <Navigate to="/login" />
   );

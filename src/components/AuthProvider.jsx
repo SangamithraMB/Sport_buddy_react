@@ -6,6 +6,8 @@ import { jwtDecode } from 'jwt-decode';
 
 
 const getUser = (jwtToken) => {
+  if (!jwtToken) return null;
+   try {
     const decodedObject = jwtDecode(jwtToken)
     return {
         userId: decodedObject.userId,
@@ -13,14 +15,18 @@ const getUser = (jwtToken) => {
         firstName: decodedObject.firstName,
         lastName: decodedObject.lastName,
         userName: decodedObject.sub //identity is sub in token
-    }
-}
+    };
+  } catch (error) {
+    console.error('Error getting user from token:', error);
+    return null;
+  }
+};
 // AuthProvider component to wrap around the app
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => { 
-    const jwtToken = localStorage.getItem('jwtToken')
-    return jwtToken ? getUser(jwtToken) : null;
-    });
+  const storedToken = localStorage.getItem("jwtToken");
+  const [user, setUser] = useState(storedToken);
+
+  const [token, setToken] = useState(storedToken);
 
   const login = (newToken) => {
     const userObj = getUser(newToken);
@@ -31,18 +37,20 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem('jwtToken');
   };
 
   useEffect(() => {
     const storedToken = localStorage.getItem('jwtToken');
     if (storedToken) {
-      setUser(storedToken);
+      setUser(getUser(storedToken));
+      setToken(storedToken);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
