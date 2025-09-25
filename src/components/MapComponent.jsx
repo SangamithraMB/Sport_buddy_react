@@ -22,7 +22,7 @@ const MapComponent = ({ latitude, longitude }) => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div style={{ flex: 1, height: '400px' }}>
+      <div style={{ flex: 1, height: '600px' }}>
         <MapContainer center={position} zoom={13} style={{ height: '100%', width: '100%', borderRadius: '10px' }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Marker position={position} icon={customIcon}>

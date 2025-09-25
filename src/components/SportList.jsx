@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchSports } from "../Services/sportService";
 
 function SportList() {
   const [sports, setSports] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getSports = async () => {
@@ -22,35 +24,38 @@ function SportList() {
     getSports();
   }, []);
 
+  const handleSportClick = (sportName) => {
+    navigate(`/open-playdates?sport=${encodeURIComponent(sportName)}`);
+  };
+
   return (
-    <div className="p-6 min-h-screen flex flex-col items-center bg-cover bg-center relative"
-         style={{ backgroundImage: "url('/assets/match.avif')" }}>
-      
+    <div className="absolute inset-0 z-0 w-full h-full overflow-hidden bg-[url('/assets/sport.jpg')] bg-cover bg-center flex flex-col items-center justify-center">
       <div className="absolute inset-0 bg-white opacity-80"></div>
+      {/* Content */}
+      <div className="relative z-10 p-6 w-full max-w-6xl text-center">
+        <h2 className="text-3xl font-semibold text-black-100 mb-6">Discover Your Sport</h2>
 
-      <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6 relative z-10">
-        Available Sports
-      </h2>
-
-      {loading ? (
-        <p className="text-center text-gray-800 relative z-10">Loading...</p>
-      ) : error ? (
-        <p className="text-center text-red-500 relative z-10">{error}</p>
-      ) : sports.length === 0 ? (
-        <p className="text-center text-gray-700 relative z-10">No sports found.</p>
-      ) : (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-9 max-w-6xl mx-auto relative z-10">
-          {sports.map((sport) => (
-            <div
-              key={sport.id}
-              className="bg-green shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300"
-            >
-              <h3 className="text-xl font-medium text-gray-800">{sport.sport_name}</h3>
-              <p className="text-gray-600 text-sm mt-2">Type: {sport.sport_type}</p>
-            </div>
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <p className="text-white">Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : sports.length === 0 ? (
+          <p className="text-gray-900">No sports found.</p>
+        ) : (
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-9">
+            {sports.map((sport) => (
+              <div
+                key={sport.id}
+                className="bg-gray-800/40 shadow-md rounded-lg p-8 hover:shadow-lg transition duration-300 cursor-pointer"
+                onClick={() => handleSportClick(sport.sport_name)}
+              >
+                <h3 className="text-xl font-medium text-gray-900">{sport.sport_name}</h3>
+                <p className="text-gray-900 text-sm mt-2">Type: {sport.sport_type}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
